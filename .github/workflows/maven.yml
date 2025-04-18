@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -32,8 +32,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        working-directory: QAutomation  # 👈 Set this to your actual folder name
 
       - name: Run Tests
         run: mvn test
-        working-directory: QAutomation  # 👈 Same here
