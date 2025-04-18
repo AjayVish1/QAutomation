@@ -1,32 +1,39 @@
-name: Run Maven Tests
+name: Java CI with Maven
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "master" ]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17' # or 11 or 8 depending on your project
+          java-version: '17'
 
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
-          path: ~/.m2
+          path: |
+            ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run Tests using Maven
-        run: mvn clean test -DsuiteXmlFile=testng.xml
+      - name: Build with Maven
+        run: mvn clean install
+        working-directory: QAutomation  # 👈 Set this to your actual folder name
+
+      - name: Run Tests
+        run: mvn test
+        working-directory: QAutomation  # 👈 Same here
